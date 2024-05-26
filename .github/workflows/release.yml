@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    name: Build Executable
     strategy:
       fail-fast: false
       matrix:
@@ -17,10 +18,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8'
           architecture: 'x64'
@@ -41,14 +42,32 @@ jobs:
           file-version: ${{ inputs.release-tag }}
           product-version: ${{ inputs.release-tag }}
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
+            
+  upload:
+    name: Upload To Release
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Release package
-        uses: softprops/action-gh-release@v0.1.15
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dists/
+          merge-multiple: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           name: Easy-MHYY v${{ inputs.release-tag }}
           tag_name: v${{ inputs.release-tag }}
-          files: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+          files: dists/*
