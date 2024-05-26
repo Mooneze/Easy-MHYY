@@ -1,3 +1,5 @@
+import sys
+
 import questionary
 import asyncio
 from DrissionPage import WebPage
@@ -41,7 +43,8 @@ if __name__ == '__main__':
 
     if headers is None:
         print("未完成登录，请重启程序后重试。")
-        exit(-1)
+        questionary.press_any_key_to_continue().ask()
+        sys.exit(-1)
 
     # 筛选关键 Headers
     print("X-Rpc-Combo_token: " + headers["x-rpc-combo_token"])
@@ -49,3 +52,6 @@ if __name__ == '__main__':
     print("X-Rpc-Device_id: " + headers["x-rpc-device_id"])
     print("X-Rpc-Device_model: " + headers["x-rpc-device_model"])
     print("X-Rpc-Device_name: " + headers["x-rpc-device_name"])
+
+    # 阻塞
+    questionary.press_any_key_to_continue().ask()
