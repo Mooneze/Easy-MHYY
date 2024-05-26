@@ -24,9 +24,6 @@ jobs:
         with:
           python-version: '3.8'
           architecture: 'x64'
-          cache: 'pip'
-          cache-dependency-path: |
-            **/requirements*.txt
 
       - name: Install Dependencies
         run: |
@@ -36,7 +33,7 @@ jobs:
         uses: Nuitka/Nuitka-Action@main
         with:
           nuitka-version: main
-          script-name: main
+          script-name: main.py
           onefile: true
           output-file: Easy-MHYY-v${{ inputs.release-tag }}
           company-name: Mooneze
