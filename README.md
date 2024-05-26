@@ -3,7 +3,7 @@
 > [!WARNING]
 > 在使用本程序前，请确保你的电脑已经安装了一个 Chromium 内核浏览器（如 Chrome、Edge）
 
-Easy-MHYY 一个能够简单地获取米哈云游网页版 Headers 的脚本。
+Easy-MHYY 是一个能够简单地获取米哈云游网页版 Headers 的脚本。
 
 你只需要下载 [Release](https://github.com/Mooneze/Easy-MHYY/releases) 中你所对应系统
 的可执行文件并运行即可。
