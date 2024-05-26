@@ -1,0 +1,2 @@
+DrissionPage~=4.0.4.23
+questionary~=2.0.1
