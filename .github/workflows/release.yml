@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-tag:
+        description: 'Release Tag (1.x.x)'
+        required: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: main
+          onefile: true
+          output-file: Easy-MHYY-v${{ inputs.release-tag }}
+          company-name: Mooneze
+          product-name: Easy-MHYY
+          file-version: ${{ inputs.release-tag }}
+          product-version: ${{ inputs.release-tag }}
+
+
+      - name: Release package
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          generate_release_notes: true
+          name: Easy-MHYY v${{ inputs.release-tag }}
+          tag_name: v${{ inputs.release-tag }}
+          files: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
