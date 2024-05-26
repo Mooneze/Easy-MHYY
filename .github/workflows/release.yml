@@ -37,6 +37,7 @@ jobs:
           script-name: main.py
           onefile: true
           output-file: Easy-MHYY-v${{ inputs.release-tag }}-${{ runner.os }}
+          output-dir: dists/
           company-name: Mooneze
           product-name: Easy-MHYY
           file-version: ${{ inputs.release-tag }}
@@ -46,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }} Build
-          path: build/*
+          path: dists/*
             
   upload:
     name: Upload Releases
